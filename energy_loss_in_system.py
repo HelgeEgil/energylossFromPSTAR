@@ -29,7 +29,7 @@ air.setThickness(4*mm)
 
 absorberAl = Material("Al", rhoAl)
 absorberAl.addElement(Al)
-absorberAl.setThickness(16*mm)
+absorberAl.setThickness(15.5*mm)
 
 absorberW = Material("W", rhoW)
 absorberW.addElement(W)

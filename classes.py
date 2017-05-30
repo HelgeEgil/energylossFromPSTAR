@@ -54,6 +54,10 @@ class Material:
     def getStoppingPower(self, energy):
         """Returns stopping power in terms of MeV (if thickness is defined)."""
         stopping_power = 0
+
+        if not self.elements:
+            raise Exception("Material {} has no defined elements!".format(self.name))
+        
         for element, fraction in self.elements:
             stopping_power += element.getStoppingPower(energy) * fraction
         
@@ -76,6 +80,12 @@ class System:
     def getStoppingPower(self, energy):
         sum_stopping_power = 0
         for material in self.system:
-            sum_stopping_power += material.getStoppingPower(energy)
+            if not material.thickness:
+                raise Exception("Material \"{}\" needs a defined thickness!".format(material.name))
+                
+            sum_stopping_power += material.getStoppingPower(energy - sum_stopping_power)
+            
+            if sum_stopping_power < 0:
+                return 0
 
         return sum_stopping_power
